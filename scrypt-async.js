@@ -520,18 +520,8 @@ function scrypt(password, salt, logN, r, dkLen, interruptStep, callback, encodin
   }
 
   // Async variant.
-  function calculateAsync(i) {
-      smixStart(i*128*r);
-      interruptedFor(0, N, interruptStep*2, smixStep1, function() {
-        interruptedFor(0, N, interruptStep*2, smixStep2, function () {
-          smixFinish(i*128*r);
-          if (i + 1 < p) {
-            nextTick(function() { calculateAsync(i + 1); });
-          } else {
-            callback(getResult(encoding));
-          }
-        });
-      });
+  function calculateAsync() {
+    callback(getResult(encoding));
   }
 
   if (typeof interruptStep === 'function') {
